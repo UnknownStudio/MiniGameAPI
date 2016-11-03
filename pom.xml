@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>team.unstudio</groupId>
+	<artifactId>MiniGameAPI</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<packaging>jar</packaging>
+	<name>MiniGameAPI</name>
+
+	<url>https://github.com/UnknownStudio/MiniGameAPI</url>
+	<inceptionYear>2016</inceptionYear>
+
+	<properties>
+		<gpg.skip>true</gpg.skip>
+		<javadoc.skip>true</javadoc.skip>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jdk.version>1.5</jdk.version>
+	</properties>
+
+	<scm>
+		<url>https://github.com/UnknownStudio/MiniGameAPI</url>
+		<connection>scm:git:https://github.com/UnknownStudio/MiniGameAPI.git</connection>
+	</scm>
+
+	<licenses>
+		<license>
+			<name>GNU AFFERO GENERAL PUBLIC LICENSE</name>
+			<url>http://www.gnu.org/licenses/agpl.txt</url>
+		</license>
+	</licenses>
+
+</project>
