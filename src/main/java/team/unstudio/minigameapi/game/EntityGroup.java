@@ -6,18 +6,26 @@ import java.util.Set;
 
 import org.bukkit.entity.Entity;
 
-public class EntityGroup{
-
-	protected final Set<Entity> eneities = new HashSet<>();
+public class EntityGroup extends HashSet<Entity>{
 	
 	public EntityGroup() {}
 	
 	public EntityGroup(Collection<Entity> c) {
-		eneities.addAll(c);
-	}
-
-	public Set<Entity> getEneities() {
-		return eneities;
+	      super(c);
 	}
 	
+	public EntityGroup filter(Filter f){
+		EntityGroup group = new EntityGroup();
+		
+		for(Entity e:this) if(f.filter(e)) group.add(e);
+		
+		return group;
+	}
+	
+	
+	
+	public interface Filter{
+		
+		boolean filter(Entity e);
+	}
 }
