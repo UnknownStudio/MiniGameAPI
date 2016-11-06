@@ -9,7 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class Room extends BukkitRunnable{
 	
 	private final AbstractGame game;
-	protected final Set<Player> players = new HashSet<>();
+	protected final EntityGroup players = new EntityGroup();
 	
 	public RoomState state;
 	
@@ -17,7 +17,7 @@ public class Room extends BukkitRunnable{
 		this.game = game;
 	}
 
-	public Set<Player> getPlayers() {
+	public EntityGroup getPlayers() {
 		return players;
 	}
 
