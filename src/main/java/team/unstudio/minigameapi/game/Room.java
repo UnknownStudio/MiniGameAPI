@@ -12,12 +12,14 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
 {
 	
 	private final AbstractGame game;
+	private final String name;
 	protected final EntityGroup players = new EntityGroup();
 	
 	private RoomState state = RoomState.DISABLED;
 	
-	public Room(AbstractGame game) {
+	public Room(AbstractGame game,String name) {
 		this.game = game;
+		this.name = name;
 	}
 
 	public EntityGroup getPlayers() {
@@ -26,6 +28,10 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
 
 	public AbstractGame getGame() {
 		return game;
+	}
+	
+	public String getName(){
+		return name;
 	}
 	
 	public RoomState getState(){
@@ -37,11 +43,15 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
 	    
 		if(state!=RoomState.WAITING)return false;
 		
+		players.add(player);
+		
 		return true;
 	}
 	
 	public boolean leavePlayer(Player player){
 		if(!players.contains(player))return true;
+		
+		players.remove(player);
 		
 		return true;
 	}

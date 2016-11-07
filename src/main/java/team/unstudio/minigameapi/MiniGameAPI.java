@@ -2,7 +2,7 @@ package team.unstudio.minigameapi;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class MiniGameAPI extends JavaPlugin{
+public final class MiniGameAPI extends JavaPlugin{
 	
 	public static MiniGameAPI INSTANCE;
 	

@@ -22,8 +22,6 @@ public class EntityGroup extends HashSet<Entity>{
 		return group;
 	}
 	
-	
-	
 	public interface Filter{
 		
 		boolean filter(Entity e);
