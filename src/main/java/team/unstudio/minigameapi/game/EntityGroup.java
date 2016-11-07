@@ -14,16 +14,16 @@ public class EntityGroup extends HashSet<Entity>{
 	      super(c);
 	}
 	
-	public EntityGroup filter(Filter f){
+	public EntityGroup filter(Filter filter){
 		EntityGroup group = new EntityGroup();
 		
-		for(Entity e:this) if(f.filter(e)) group.add(e);
+		for(Entity e:this) if(filter.filter(e)) group.add(e);
 		
 		return group;
 	}
 	
 	public interface Filter{
 		
-		boolean filter(Entity e);
+		boolean filter(Entity entity);
 	}
 }

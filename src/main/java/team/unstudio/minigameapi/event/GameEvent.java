@@ -4,10 +4,8 @@ import org.bukkit.event.HandlerList;
 import team.unstudio.minigameapi.game.AbstractGame;
 import team.unstudio.minigameapi.game.Room;
 
-public class GameEvent extends Event
-{
-	private static final HandlerList handler = new HandlerList();
-	
+public class GameEvent extends Event{
+    
 	private final Room room;
 	
 	public GameEvent(Room room){
@@ -21,6 +19,8 @@ public class GameEvent extends Event
 	public AbstractGame getGame(){
 		return room.getGame();
 	}
+    
+    private static final HandlerList handler = new HandlerList();
 	
 	@Override
 	public HandlerList getHandlers()
