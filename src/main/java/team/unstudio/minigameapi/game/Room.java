@@ -106,7 +106,7 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
         
         game.onGameStart(this);
         
-        runTaskTimer(MiniGameAPI.INSTANCE,1L,1L);
+        runTaskTimer(getGame().getPlugin(),1L,1L);
         
         state = RoomState.PLAYING;
     }
@@ -117,9 +117,9 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
             state=RoomState.ENDING;
         }
         
-        Bukkit.getPluginManager().callEvent(new GameStopEvent(this));
-        
         cancel();
+        
+        Bukkit.getPluginManager().callEvent(new GameStopEvent(this));
         
         game.onGameStop(this);
         
@@ -132,9 +132,9 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
              state=RoomState.ENDING;
         }
         
-        Bukkit.getPluginManager().callEvent(new GameEndEvent(this));
-        
         cancel();
+        
+        Bukkit.getPluginManager().callEvent(new GameEndEvent(this));
         
         game.onGameEnd(this);
         
