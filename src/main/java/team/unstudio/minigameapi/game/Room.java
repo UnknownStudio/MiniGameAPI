@@ -13,9 +13,20 @@ import team.unstudio.minigameapi.event.GamePlayerLeaveEvent;
 import team.unstudio.minigameapi.event.GameStartEvent;
 import team.unstudio.minigameapi.event.GameEndEvent;
 import team.unstudio.minigameapi.event.GameStopEvent;
+import team.unstudio.minigameapi.MiniGameAPI;
+import java.util.HashMap;
 
 public class Room extends BukkitRunnable implements ConfigurationSerializable
 {
+    private static final Map<Player,Room> PlayerToRoom = new HashMap<>();
+    
+    public static boolean isInGame(Player player){
+        return PlayerToRoom.containsKey(player);
+    }
+    
+    public static Room getRoom(Player player){
+        return PlayerToRoom.get(player);
+    }
 	
 	private final AbstractGame game;
 	private final String name;
@@ -55,6 +66,8 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
         game.onPlayerJoin(this,player);
         
 		players.add(player);
+        
+        PlayerToRoom.put(player,this);
 		
 		return true;
 	}
@@ -67,6 +80,8 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
         game.onPlayerLeave(this,player);
 		
 		players.remove(player);
+        
+        PlayerToRoom.remove(player);
 		
 		return true;
 	}
@@ -90,6 +105,10 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
         Bukkit.getPluginManager().callEvent(new GameStartEvent(this));
         
         game.onGameStart(this);
+        
+        runTaskTimer(MiniGameAPI.INSTANCE,1L,1L);
+        
+        state = RoomState.PLAYING;
     }
     
     public void stop(){
@@ -100,8 +119,11 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
         
         Bukkit.getPluginManager().callEvent(new GameStopEvent(this));
         
+        cancel();
+        
         game.onGameStop(this);
         
+        state=RoomState.WAITING;
     }
     
     public void end(){
@@ -112,7 +134,11 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
         
         Bukkit.getPluginManager().callEvent(new GameEndEvent(this));
         
+        cancel();
+        
         game.onGameEnd(this);
+        
+        state=RoomState.WAITING;
     }
     
     public long getTick(){

@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.Location;
 
 public class EntityGroup extends HashSet<Entity>{
 	
@@ -21,6 +23,14 @@ public class EntityGroup extends HashSet<Entity>{
 		
 		return group;
 	}
+    
+    public void sendMessage(String message){
+        for(Entity e:this) if(e instanceof Player) e.sendMessage(message);
+    }
+    
+    public void teleport(Location location){
+        for(Entity e:this) e.teleport(location);
+    }
 	
 	public interface Filter{
 		
