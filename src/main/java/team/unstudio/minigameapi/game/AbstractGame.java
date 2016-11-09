@@ -3,11 +3,14 @@ package team.unstudio.minigameapi.game;
 import org.bukkit.event.Listener;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import java.util.Set;
+import java.util.HashSet;
 
 public abstract class AbstractGame implements Listener{
     
     private final JavaPlugin plugin;
     private final String name;
+    private final Set<Room> rooms = new HashSet<>();
     
     public AbstractGame(JavaPlugin plugin,String name){
         this.plugin = plugin;
@@ -20,6 +23,10 @@ public abstract class AbstractGame implements Listener{
     
     public String getName(){
         return name;
+    }
+    
+    public Set<Room> getRooms(){
+        return rooms;
     }
 	
 	public abstract void onPlayerJoin(Room room,Player player);
@@ -36,7 +43,14 @@ public abstract class AbstractGame implements Listener{
     
     @Override
     public boolean equals(Object obj){
-        //Todo:equals
-        return false;
+        if(obj==null) return false;
+        
+        if(!(obj instanceof AbstractGame)) return false;
+        
+        AbstractGame o = (AbstractGame) obj;
+        
+        if(!o.getName().equals(getName())) return false;
+        
+        return true;
     }
 }

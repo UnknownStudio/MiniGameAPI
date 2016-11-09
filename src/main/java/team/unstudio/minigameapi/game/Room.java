@@ -158,4 +158,19 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
 		// TODO: Implement this method
 		return null;
 	}
+    
+    @Override
+    public boolean equals(Object obj){
+        if(obj==null) return false;
+
+        if(!(obj instanceof Room)) return false;
+
+        Room o = (Room) obj;
+
+        if(!o.getName().equals(getName())) return false;
+        
+        if(!o.getGame().equals(getGame())) return false;
+        
+        return true;
+    }
 }
