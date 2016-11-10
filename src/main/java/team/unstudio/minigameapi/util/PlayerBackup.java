@@ -4,6 +4,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.GameMode;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import java.util.Map;
+import java.util.HashMap;
 public class PlayerBackup implements ConfigurationSerializable
 {
 
@@ -52,7 +53,12 @@ public class PlayerBackup implements ConfigurationSerializable
     @Override
     public Map<String, Object> serialize()
     {
-        // TODO: Implement this method
-        return null;
+        Map<String,Object> map = new HashMap<>();
+        map.put("health",health);
+        map.put("foodlevel",foodlevel);
+        map.put("exp",exp);
+        map.put("allowFilght",allowFilght);
+        map.put("gamemode",gamemode.getValue());
+        return map;
     }
 }
