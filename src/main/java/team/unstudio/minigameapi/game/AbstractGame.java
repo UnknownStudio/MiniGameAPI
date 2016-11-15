@@ -5,8 +5,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Set;
 import java.util.HashSet;
+import org.bukkit.command.CommandExecutor;
 
-public abstract class AbstractGame implements Listener{
+public abstract class AbstractGame implements Listener,CommandExecutor{
     
     private final JavaPlugin plugin;
     private final String name;
