@@ -113,7 +113,6 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
     
     public void stop(){
         synchronized(this){
-            if(state!=RoomState.PLAYING) return;
             state=RoomState.ENDING;
         }
         
@@ -141,6 +140,13 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
         state=RoomState.WAITING;
     }
     
+    public void dispose(){
+        if(isEnable()) {
+            stop();
+            setEnable(false);
+        }
+    }
+    
     public long getTick(){
         return tick;
     }
@@ -149,7 +155,7 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
 	public void run()
 	{
         tick++;
-		game.onTick(this);
+		game.onGameTick(this);
 	}
 	
 	@Override

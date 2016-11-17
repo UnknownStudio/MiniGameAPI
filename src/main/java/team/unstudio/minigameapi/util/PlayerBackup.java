@@ -5,6 +5,7 @@ import org.bukkit.GameMode;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import java.util.Map;
 import java.util.HashMap;
+import org.bukkit.inventory.ItemStack;
 public class PlayerBackup implements ConfigurationSerializable
 {
 
@@ -15,6 +16,7 @@ public class PlayerBackup implements ConfigurationSerializable
     private int exp;
     private GameMode gamemode;
     private boolean allowFilght;
+    private ItemStack[] inventory;
     
     public PlayerBackup(Player player){
         this.player = player;

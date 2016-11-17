@@ -29,12 +29,26 @@ public abstract class AbstractGame implements Listener,CommandExecutor{
     public Set<Room> getRooms(){
         return rooms;
     }
+    
+    public boolean addRoom(Room room){
+        return rooms.add(room);
+    }
+    
+    public boolean removeRoom(Room room){
+        room.dispose();
+        return rooms.remove(room);
+    }
+    
+    public Room getRoom(String name){
+        for(Room room:rooms) if(room.getName().equals(name)) return room;
+        return null;
+    }
 	
 	public abstract void onPlayerJoin(Room room,Player player);
     
     public abstract void onPlayerLeave(Room room,Player player);
     
-    public abstract void onTick(Room room);
+    public abstract void onGameTick(Room room);
     
     public abstract void onGameStart(Room room);
     
