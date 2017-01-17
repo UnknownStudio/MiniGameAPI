@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class Scoreboard {
-	//最大行数16       每行最大字符40
 	public Scoreboard(){
 		
 	}
