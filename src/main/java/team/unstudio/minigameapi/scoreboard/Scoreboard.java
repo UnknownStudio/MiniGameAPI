@@ -1,6 +1,16 @@
 package team.unstudio.minigameapi.scoreboard;
 
+import java.util.ArrayList;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+import team.unstudio.minigameapi.game.Room;
+
 public class Scoreboard {
-//方向：根据房间不同而变的记分板
-	//暂时容我想想....
+	//最大行数16       每行最大字符40
+	public Scoreboard(){
+		
+	}
+	
 }
