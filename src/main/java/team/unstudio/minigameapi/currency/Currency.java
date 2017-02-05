@@ -48,9 +48,8 @@ public class Currency {
 	 */
 	public static double get(OfflinePlayer player) throws SQLException{
 		String name = getSaveName(player);
-		PreparedStatement prepare = conn.prepareStatement("SELECT Money FROM ? WHERE USER_ID LIKE ? LIMIT 0,1");
-		prepare.setString(1, TABLE_NAME);
-		prepare.setString(2, name);
+		PreparedStatement prepare = conn.prepareStatement("SELECT Money FROM "+TABLE_NAME+" WHERE USER_ID LIKE ? LIMIT 0,1");
+		prepare.setString(1, name);
 		ResultSet result = prepare.executeQuery();
 		double money = defaultMoney;
 		if (result.next()) money = result.getDouble(1); 
