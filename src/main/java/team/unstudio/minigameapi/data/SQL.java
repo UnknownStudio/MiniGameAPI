@@ -59,8 +59,7 @@ public class SQL {
 	}
 	public Boolean isTableExists(){
 		try{
-			PreparedStatement stmt = this.conn.prepareStatement("SELECT * FROM ?");
-			stmt.setString(1,this.table);
+			PreparedStatement stmt = this.conn.prepareStatement("SELECT * FROM "+this.schema+"."+this.table);
 			return stmt.execute();
 		} catch(Exception e){
 			return false;
@@ -69,8 +68,7 @@ public class SQL {
 	public Boolean isSchemaExists(){
 		if (this.useMySQL){
 			try{
-				PreparedStatement stmt = this.conn.prepareStatement("SHOW SCHEMAS LIKE ?");
-				stmt.setString(1, this.schema);
+				PreparedStatement stmt = this.conn.prepareStatement("SHOW SCHEMAS LIKE "+this.schema);
 				ResultSet rt = stmt.executeQuery();
 				if (rt.next()){
 					return true;
@@ -83,8 +81,7 @@ public class SQL {
 		}
 	}
 	public Boolean createSchema() throws SQLException{
-		PreparedStatement stmt = this.conn.prepareStatement("CREATE DATABASE ?");
-		stmt.setString(1, this.schema);
+		PreparedStatement stmt = this.conn.prepareStatement("CREATE DATABASE "+this.schema);
 		return stmt.execute();
 	}
 }
