@@ -1,0 +1,90 @@
+package team.unstudio.minigameapi.data;
+
+import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import team.unstudio.minigameapi.MiniGameAPI;
+
+public class SQL {
+	private Connection conn;
+	private String schema;
+	private String table;
+	private boolean useMySQL;
+	private File SQLFile;
+	/**
+	 * 
+	 * 采用MySQL的实例化方式
+	 * @param host
+	 * 			 SQL的HOST
+	 * @param port
+	 *           SQL的PORT
+	 * @param user
+	 *           SQL用户名
+	 * @param password
+	 *           SQL用户密码
+	 * @param schema
+	 *           数据库名
+	 * @param table
+	 *           表名
+	 * @throws ClassNotFoundException
+	 * @throws SQLException 
+	 */
+	public SQL(String host,String port,String user,String password,String schema,String table) throws ClassNotFoundException, SQLException{
+		Class.forName("com.mysql.jdbc.Driver");
+		this.conn = DriverManager.getConnection("jdbc:mysql://"+host+":"+port, user, password);
+		this.schema = schema;
+		this.table = table;
+		this.useMySQL = true;
+	}
+	/**
+	 * 
+	 * 不采用MySQL时的实例化方式
+	 * @param schema
+	 * 				数据库名
+	 * @param table
+	 * 				表名
+	 * @throws ClassNotFoundException 
+	 * @throws SQLException 
+	 */
+	public SQL(String schema,String table) throws ClassNotFoundException, SQLException{
+		Class.forName("org.sqlite.JDBC");
+		this.table = table;
+		this.schema = schema;
+		this.conn = DriverManager.getConnection("jdbc:sqlite:"+SQLFile);
+		this.SQLFile = new File(MiniGameAPI.INSTANCE.getDataFolder()+"\\DataBase",schema+".db");
+	}
+	public Boolean isTableExists(){
+		try{
+			PreparedStatement stmt = this.conn.prepareStatement("SELECT * FROM ?");
+			stmt.setString(1,this.table);
+			return stmt.execute();
+		} catch(Exception e){
+			return false;
+		}
+	}
+	public Boolean isSchemaExists(){
+		if (this.useMySQL){
+			try{
+				PreparedStatement stmt = this.conn.prepareStatement("SHOW SCHEMAS LIKE ?");
+				stmt.setString(1, this.schema);
+				ResultSet rt = stmt.executeQuery();
+				if (rt.next()){
+					return true;
+				} else return false;
+			} catch(Exception e){
+				return false;
+			}
+		} else {
+			return SQLFile.exists();
+		}
+	}
+	public Boolean createSchema() throws SQLException{
+		PreparedStatement stmt = this.conn.prepareStatement("CREATE DATABASE ?");
+		stmt.setString(1, this.schema);
+		return stmt.execute();
+	}
+}
