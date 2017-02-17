@@ -196,6 +196,28 @@ public class Board {
 	public Score getScore(String line){
 		return this.objective.getScore(line);
 	}
+	/**返回一个长度为16的int数组，已被使用的行数为-1.
+	 * 
+	 * 例：行数0,5,8被使用则
+	 * [0,-1,-1,-1,5,-1,-1,8....]
+	 * 
+	 * @return 空置的行数
+	 */
+	public int[] getIdle(){
+		Set<Integer> key1 = map.keySet();
+		Set<Integer> key2 = scrollDisplay.keySet();
+		int[] value = new int[16];
+		for(int i=0;i<16;i++){
+			if(!key1.contains(i)){
+				value[i] = i;
+				break;
+			}else if(!key2.contains(i)){
+				value[i] = i;
+			}else
+				value[i] = -1;
+		}
+		return value;
+	}
 	@Override
 	public int hashCode(){
 		return map.hashCode()+index.hashCode()+scrollDisplay.hashCode()+objective.getDisplayName().hashCode();
@@ -207,6 +229,7 @@ public class Board {
 		Board b = (Board) o;
 		if(!(objective.getDisplayName().equals(b.getTitle())))return false;
 		if(!(scoreboard.equals(b.getScoreboard())))return false;
+		if(!(getIdle().equals(b.getIdle())))return false;
 		if(!(getText().equals(b.getText())))return false;
 		return true;
 	}
