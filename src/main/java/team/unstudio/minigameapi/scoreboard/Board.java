@@ -91,18 +91,18 @@ public class Board {
     	setup();
     }
     /**
-     * 移除对应行数的文字.
+     * 移除对应行数的文字.更改将会立即同步到游戏内
      * @param line 行数
-     * 更改将会立即同步到游戏内
+     * 
      */
 	public void remove(int line){
 		this.scoreboard.resetScores(map.get(line));
 		map.remove(line);
 	}
 	/**
-	 * 移除对应的文字.
+	 * 移除对应的文字.更改将会立即同步到游戏内
 	 * @param line 需要删除的字符串
-	 * 更改将会立即同步到游戏内
+	 * 
 	 */
 	public void remove(String line){
 		this.scoreboard.resetScores(line);
