@@ -42,8 +42,9 @@ public class Board {
     }
     /**设置行数和对应的文本.
      * 
-     * 建议使用line使用0到15
+     * 建议使用line使用0到15<br>
      * 
+     * 更改将会立即同步到游戏内
      * @param line 设置的行数
      * @param text 你要设置的文字
      */
@@ -54,8 +55,9 @@ public class Board {
     /**设置行数和对应的滚动文字.
      * 
      * 设置滚动文字后如果设置line上已经有文本了，那么那个文本将会被<br>
-     * 当滚动文本被删除时，原文本还会出现
+     * 当滚动文本被删除时，原文本还会出现<br>
      * 
+     * 更改将会立即同步到游戏内
      * @see #showNext
      * @param line 设置的行数
      * @param text 需要动态显示的文字
@@ -66,7 +68,8 @@ public class Board {
     		a.add(text[i]);
     	setScrollDisplay(line,a);
     }
-    /**设置行数和对应的滚动文字
+    /**设置行数和对应的滚动文字.
+     * 更改将会立即同步到游戏内
      * 
      * @see #showNext
      * @param line 设置的行数
@@ -77,26 +80,29 @@ public class Board {
     	index.put(line, 0);
     	setup();
     }
-    /**移除对应行数的动态文字
-     * 
+    /**移除对应行数的动态文字.
+     * 更改将会立即同步到游戏内
      * @param line 行数
      */
     public void removeScrollDisplay(int line){
     	this.scoreboard.resetScores(scrollDisplay.get(line).get(index.get(line)));
     	index.remove(line);
     	scrollDisplay.remove(line);
+    	setup();
     }
     /**
-     * 移除对应行数的文字
+     * 移除对应行数的文字.
      * @param line 行数
+     * 更改将会立即同步到游戏内
      */
 	public void remove(int line){
 		this.scoreboard.resetScores(map.get(line));
 		map.remove(line);
 	}
 	/**
-	 * 移除对应的文字
+	 * 移除对应的文字.
 	 * @param line 需要删除的字符串
+	 * 更改将会立即同步到游戏内
 	 */
 	public void remove(String line){
 		this.scoreboard.resetScores(line);
@@ -109,7 +115,8 @@ public class Board {
 	 * ["one","two","three"]
 	 * 对应行数0，one ,行数1 two,行数2 three<br>
 	 * 
-	 * 假如行数0是scrollDisplay那么,scrollDisplay将不会被覆盖
+	 * 假如行数0是scrollDisplay那么,scrollDisplay将不会被覆盖<br>
+	 * 更改将会立即同步到游戏内
 	 * 
 	 * @param text 准备显示的数组
 	 */
@@ -165,7 +172,7 @@ public class Board {
 	public String getTitle(){
 		return objective.getDisplayName();
 	}
-	/**按照自然顺序写入String数组
+	/**从行数0开始写入String数组
 	 * 碰到scrollDisplay将会写入scrollDisplay内的第一个文本
 	 * 
 	 * @return 记分板文本
@@ -181,7 +188,8 @@ public class Board {
 		return s;
 	}
 	/**
-	 * setTitle 设置标题
+	 * setTitle 设置标题.
+	 * 更改将会立即同步到游戏内
 	 * 
 	 * @param title 标题
 	 */
