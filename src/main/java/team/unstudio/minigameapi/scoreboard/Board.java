@@ -1,8 +1,7 @@
 package team.unstudio.minigameapi.scoreboard;
 
 import java.util.ArrayList;
-
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -24,80 +23,93 @@ import org.bukkit.scoreboard.Score;
  *
  */
 public class Board {
-    private final org.bukkit.scoreboard.Scoreboard scoreboard;
-    private final Objective objective;
-    private final TreeMap<Integer,String> map = new TreeMap<>();
-    private final TreeMap<Integer,List<String>> scrollDisplay = new TreeMap<>();
-    private final HashMap<Integer,Integer> index = new HashMap<>();
-    private Score score;
-    /**构造一个显示title为标题的记分板列表
-     * 
-     * @param title 记分板的显示标题
-     */
-    public Board(String title){
-    	scoreboard=Bukkit.getScoreboardManager().getNewScoreboard();
-    	this.objective = scoreboard.registerNewObjective(title, "dummy");
-    	this.objective.setDisplayName(title);
-    	this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-    }
-    /**设置行数和对应的文本.
-     * 
-     * 建议使用line使用0到15<br>
-     * 
-     * 更改将会立即同步到游戏内
-     * @param line 设置的行数
-     * @param text 你要设置的文字
-     */
-    public void set(int line,String text){
-    	map.put(line, text);
-    	setup();
+	private final org.bukkit.scoreboard.Scoreboard scoreboard;
+	private final Objective objective;
+	private final TreeMap<Integer,String> map = new TreeMap<>();
+	private final HashSet<LoopText> loopText =new HashSet<>();
+	private Score score;
+	/**构造一个显示title为标题的记分板列表
+	 * 
+	 * @param title 记分板的显示标题
+	 */
+	public Board(String title){
+		scoreboard=Bukkit.getScoreboardManager().getNewScoreboard();
+		this.objective = scoreboard.registerNewObjective(title, "dummy");
+		this.objective.setDisplayName(title);
+		this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 	}
-    /**设置行数和对应的滚动文字.
-     * 
-     * 设置滚动文字后如果设置line上已经有文本了，那么那个文本将会被<br>
-     * 当滚动文本被删除时，原文本还会出现<br>
-     * 
-     * 更改将会立即同步到游戏内
-     * @see #showNext
-     * @param line 设置的行数
-     * @param text 需要动态显示的文字
-     */
-    public void setScrollDisplay(int line,String[] text){
-    	ArrayList<String> a = new ArrayList<>();
-    	for(int i=0;i<text.length;i++)
-    		a.add(text[i]);
-    	setScrollDisplay(line,a);
-    }
-    /**设置行数和对应的滚动文字.
-     * 更改将会立即同步到游戏内
-     * 
-     * @see #showNext
-     * @param line 设置的行数
-     * @param c 需要动态显示的文字
-     */
-    public void setScrollDisplay(int line,List<String> c){
-    	scrollDisplay.put(line, c);
-    	index.put(line, 0);
-    	setup();
-    }
-    /**移除对应行数的动态文字.
-     * 更改将会立即同步到游戏内
-     * @param line 行数
-     */
-    public void removeScrollDisplay(int line){
-    	this.scoreboard.resetScores(scrollDisplay.get(line).get(index.get(line)));
-    	index.remove(line);
-    	scrollDisplay.remove(line);
-    	setup();
-    }
-    /**
-     * 移除对应行数的文字.更改将会立即同步到游戏内
-     * @param line 行数
-     * 
-     */
+	/**设置行数和对应的文本.
+	 * 
+	 * 建议使用line使用0到15<br>
+	 * 
+	 * 更改将会立即同步到游戏内<br>
+	 * 假如之前这个行数被占用，则会覆盖掉
+	 * @param line 设置的行数
+	 * @param text 你要设置的文字
+	 */
+	public void set(int line,String text){
+		if(map.containsKey(line))
+			remove(line);
+		map.put(line, text);
+		setup();
+	}
+	/**设置行数和对应的循环文字.
+	 * 
+	 * 设置循环文字后如果设置line上已经有文本了，那么那个文本将会被<br>
+	 * 当滚动文本被删除时，原文本还会出现<br>
+	 * 
+	 * 更改将会立即同步到游戏内
+	 * @see #showNext
+	 * @param line 设置的行数
+	 * @param text 需要动态显示的文字
+	 */
+	public void setLoopDisplay(int line,String[] text){
+		ArrayList<String> a = new ArrayList<>();
+		for(int i=0;i<text.length;i++)
+			a.add(text[i]);
+		setLoopDisplay(line,a);
+	}
+	/**设置行数和对应的循环文字.
+	 * 更改将会立即同步到游戏内
+	 * 
+	 * @see #showNext
+	 * @param line 设置的行数
+	 * @param c 需要动态显示的文字
+	 */
+	public void setLoopDisplay(int line,List<String> c){
+		LoopText lt = new LoopText(line,c);
+		loopText.add(lt);
+		setup(lt.next(),line);
+	}
+	/**移除对应行数的循环文字.
+	 * 更改将会立即同步到游戏内
+	 * @param line 行数
+	 */
+	public void removeLoopDisplay(int line){
+		LoopText lt = getLoopText(line);
+		this.scoreboard.resetScores(lt.last());
+		loopText.remove(lt);
+		setup();
+	}
+	/**
+	 * 移除对应行数的文字.更改将会立即同步到游戏内
+	 * @param line 行数
+	 * 
+	 */
 	public void remove(int line){
-		this.scoreboard.resetScores(map.get(line));
-		map.remove(line);
+		if(map.containsKey(line)){
+			this.scoreboard.resetScores(map.get(line));
+			map.remove(line);
+		}
+	}
+	private LoopText getLoopText(int line){
+		Iterator<LoopText> i =loopText.iterator();
+		while(i.hasNext()){
+			LoopText l= i.next();
+			if(l.getLine()==line)
+				return l;
+		}
+		return null;
 	}
 	/**
 	 * 移除对应的文字.更改将会立即同步到游戏内
@@ -108,7 +120,7 @@ public class Board {
 		this.scoreboard.resetScores(line);
 		for(int i=0;i<map.size();i++)
 			if(map.get(i).equals(line))
-				map.remove(i);
+				remove(i);
 	}
 	/**传入的数组将会按照长度顺序将原表覆盖.
 	 * 假设
@@ -134,35 +146,28 @@ public class Board {
 		return this.scoreboard;
 	}
 	private void setup(){
-		Set<Integer> key = scrollDisplay.keySet();
-		for(int i=0;i<map.size();i++){
-			if(!key.contains(i)){
-				String s = map.get(i);
-				this.score=this.objective.getScore(s);
-				this.score.setScore(1);
-				this.score.setScore(i);
-			}else{
-				this.score=this.objective.getScore(scrollDisplay.get(i).get(index.get(i)));
-				this.score.setScore(1);
-				this.score.setScore(i);
-			}
+		for(int i=0;i<16;i++){
+			String s = map.get(i);
+			if(s==null)break;
+			setup(s,i);
 		}
 	}
+	private void setup(String s,int i){
+		this.score=this.objective.getScore(s);
+		this.score.setScore(1);
+		this.score.setScore(i);
+	}
 	/**
-	 * 所有scrollDisplay显示下一个文本.
+	 * 所有循环文字显示下一个文本.
 	 * 
 	 * 文本是滚动的，如果滚到末尾，自动从第一位继续开始
 	 */
 	public void showNext(){
-		Set<Integer> key = scrollDisplay.keySet();
-		Iterator<Integer> it = key.iterator();
+		Iterator<LoopText> it = loopText.iterator();
 		while(it.hasNext()){
-			int i = it.next();
-			if(index.get(i)>=scrollDisplay.get(i).size())index.put(i, 0);
-			this.score=this.objective.getScore(scrollDisplay.get(i).get(index.get(i)));
-			this.score.setScore(1);
-			this.score.setScore(i);
-			index.put(i, index.get(i)+1);
+			LoopText l = it.next();
+			this.scoreboard.resetScores(l.last());
+			setup(l.next(),l.getLine());
 		}
 	}
 	/**返回记分板标题
@@ -178,12 +183,12 @@ public class Board {
 	 * @return 记分板文本
 	 */
 	public String[] getText(){
-		String[] s = new String[map.size()+scrollDisplay.size()];
-		Set<Integer> key = scrollDisplay.keySet();
-		for(int i=0;i<map.size();i++){
-			if(key.contains(i))s[i]=scrollDisplay.get(i).get(0);
+		String[] s = new String[16];
+		for(int i=0;i<16;i++){
+			LoopText l = getLoopText(i);
+			if(l!=null)s[i]=l.first();
 			else
-			s[i]=map.get(i);
+				s[i]=map.get(i);
 		}
 		return s;
 	}
@@ -213,13 +218,13 @@ public class Board {
 	 */
 	public int[] getIdle(){
 		Set<Integer> key1 = map.keySet();
-		Set<Integer> key2 = scrollDisplay.keySet();
 		int[] value = new int[16];
 		for(int i=0;i<16;i++){
+			LoopText l = getLoopText(i);
 			if(!key1.contains(i)){
 				value[i] = i;
 				break;
-			}else if(!key2.contains(i)){
+			}else if(l==null){
 				value[i] = i;
 			}else
 				value[i] = -1;
@@ -228,7 +233,7 @@ public class Board {
 	}
 	@Override
 	public int hashCode(){
-		return map.hashCode()+index.hashCode()+scrollDisplay.hashCode()+objective.getDisplayName().hashCode();
+		return map.hashCode()+loopText.hashCode()+objective.getDisplayName().hashCode();
 	}
 	@Override
 	public boolean equals(Object o){
