@@ -18,7 +18,7 @@ import org.bukkit.scoreboard.Score;
  *
  */
 public class Board {
-	private final org.bukkit.scoreboard.Scoreboard scoreboard;
+	protected final org.bukkit.scoreboard.Scoreboard scoreboard;
 	private final Objective objective;
 	private final TreeMap<Integer,String> map = new TreeMap<>();
 	private Score score;
