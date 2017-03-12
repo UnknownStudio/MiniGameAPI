@@ -1,13 +1,16 @@
 package team.unstudio.minigameapi.data;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 import team.unstudio.minigameapi.MiniGameAPI;
+import team.unstudio.minigameapi.data.TableProperty.TableProperty;
 
 public class SQL {
 	private Connection conn;
@@ -50,16 +53,24 @@ public class SQL {
 	 * @throws ClassNotFoundException 
 	 * @throws SQLException 
 	 */
-	public SQL(String schema,String table) throws ClassNotFoundException, SQLException{
+	public SQL(String schema,String table,boolean create) throws ClassNotFoundException, SQLException{
 		Class.forName("org.sqlite.JDBC");
 		this.table = table;
 		this.schema = schema;
-		this.conn = DriverManager.getConnection("jdbc:sqlite:"+SQLFile);
 		this.SQLFile = new File(MiniGameAPI.INSTANCE.getDataFolder()+"\\DataBase",schema+".db");
+		if (create && !SQLFile.exists()){
+			try{
+				SQLFile.createNewFile();
+			} catch(IOException e){
+				e.printStackTrace();
+			}
+		}
+		this.conn = DriverManager.getConnection("jdbc:sqlite:"+SQLFile);
 	}
 	public Boolean isTableExists(){
 		try{
 			PreparedStatement stmt = this.conn.prepareStatement("SELECT * FROM "+this.schema+"."+this.table);
+		
 			return stmt.execute();
 		} catch(Exception e){
 			return false;
@@ -84,4 +95,15 @@ public class SQL {
 		PreparedStatement stmt = this.conn.prepareStatement("CREATE DATABASE "+this.schema);
 		return stmt.execute();
 	}
+	public Boolean createTable(String table, TableProperty... properties) throws SQLException{
+		StringBuilder code = new StringBuilder("CREATE TABLE "+table+" {");
+		for (TableProperty property : properties){
+			code.append(property.getCode()+",");
+		}
+		code.delete(code.length()-1, code.length());
+		code.append("}");
+		PreparedStatement stmt = this.conn.prepareStatement(code.toString());
+		return stmt.execute();
+	}
+	
 }
