@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 
 import team.unstudio.minigameapi.MiniGameAPI;
-import team.unstudio.minigameapi.data.TableProperty.TableProperty;
+import team.unstudio.minigameapi.data.property.TableProperty;
 
 public class SQL {
 	private Connection conn;

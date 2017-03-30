@@ -1,4 +1,4 @@
-package team.unstudio.minigameapi.game;
+package team.unstudio.minigameapi.util;
 
 import java.util.Collection;
 import java.util.HashSet;

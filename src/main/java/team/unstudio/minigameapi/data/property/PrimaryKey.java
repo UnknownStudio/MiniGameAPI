@@ -1,4 +1,4 @@
-package team.unstudio.minigameapi.data.TableProperty;
+package team.unstudio.minigameapi.data.property;
 
 public class PrimaryKey implements TableProperty{
 	String key;

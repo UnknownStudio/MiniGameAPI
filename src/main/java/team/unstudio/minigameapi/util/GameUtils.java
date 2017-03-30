@@ -63,4 +63,8 @@ public final class GameUtils {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void resetTitle(Player player){
+		//TODO:
+	}
 }

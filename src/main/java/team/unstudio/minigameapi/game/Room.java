@@ -10,6 +10,8 @@ import team.unstudio.minigameapi.event.GamePlayerLeaveEvent;
 import team.unstudio.minigameapi.event.GameStartEvent;
 import team.unstudio.minigameapi.event.GameEndEvent;
 import team.unstudio.minigameapi.event.GameStopEvent;
+import team.unstudio.minigameapi.util.EntityGroup;
+
 import java.util.HashMap;
 
 public class Room extends BukkitRunnable implements ConfigurationSerializable

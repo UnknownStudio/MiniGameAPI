@@ -1,4 +1,4 @@
-package team.unstudio.minigameapi.data.TableProperty;
+package team.unstudio.minigameapi.data.property;
 
 public class Unique implements TableProperty{
 	String uniques[];
