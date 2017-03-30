@@ -1,8 +1,5 @@
 package team.unstudio.minigameapi.game;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -13,7 +10,6 @@ import team.unstudio.minigameapi.event.GamePlayerLeaveEvent;
 import team.unstudio.minigameapi.event.GameStartEvent;
 import team.unstudio.minigameapi.event.GameEndEvent;
 import team.unstudio.minigameapi.event.GameStopEvent;
-import team.unstudio.minigameapi.MiniGameAPI;
 import java.util.HashMap;
 
 public class Room extends BukkitRunnable implements ConfigurationSerializable
@@ -30,7 +26,7 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
 	
 	private final AbstractGame game;
 	private final String name;
-	protected final EntityGroup players = new EntityGroup();
+	protected final EntityGroup<Player> players = new EntityGroup<>();
 	
 	private RoomState state = RoomState.DISABLED;
     private long tick=0;
@@ -40,7 +36,7 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
 		this.name = name;
 	}
 
-	public EntityGroup getPlayers() {
+	public EntityGroup<Player> getPlayers() {
 		return players;
 	}
 

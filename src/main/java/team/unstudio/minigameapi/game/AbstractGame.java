@@ -55,10 +55,12 @@ public abstract class AbstractGame implements Listener,CommandExecutor{
     public abstract void onGameEnd(Room room);
     
     public abstract void onGameStop(Room room);
+    
     @Override
     public int hashCode(){
-    	return name.hashCode()+plugin.getName().hashCode()*3;
+    	return name.hashCode();
     }
+    
     @Override
     public boolean equals(Object obj){
         if(obj==null) return false;

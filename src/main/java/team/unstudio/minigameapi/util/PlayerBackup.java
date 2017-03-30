@@ -1,6 +1,5 @@
 package team.unstudio.minigameapi.util;
 import org.bukkit.entity.Player;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.GameMode;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import java.util.Map;
@@ -28,16 +27,6 @@ public class PlayerBackup implements ConfigurationSerializable
         exp = player.getTotalExperience();
         gamemode = player.getGameMode();
         allowFilght = player.getAllowFlight();
-    }
-    
-    public void clear(){
-        player.setHealth(20);
-        player.setFoodLevel(20);
-        player.setTotalExperience(0);
-        player.setLevel(0);
-        player.setExp(0);
-        player.setGameMode(GameMode.SURVIVAL);
-        player.setAllowFlight(false);
     }
     
     public void load(){

@@ -2,23 +2,21 @@ package team.unstudio.minigameapi.game;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
-
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
 import java.util.Random;
 
-public class EntityGroup extends HashSet<Entity>{
+public class EntityGroup<T extends Entity> extends HashSet<T>{
 	
 	public EntityGroup() {}
 	
-	public EntityGroup(Collection<Entity> c) {
+	public EntityGroup(Collection<T> c) {
 	      super(c);
 	}
 	
-	public EntityGroup filter(Filter filter){
-		EntityGroup group = new EntityGroup();
+	public EntityGroup<Entity> filter(Filter filter){
+		EntityGroup<Entity> group = new EntityGroup<>();
 		
 		for(Entity e:this) if(filter.filter(e)) group.add(e);
 		
@@ -26,11 +24,14 @@ public class EntityGroup extends HashSet<Entity>{
 	}
     
     public void sendMessage(String message){
-        for(Entity e:this) if(e instanceof Player) e.sendMessage(message);
+        for(Entity e:this) 
+        	if(e instanceof Player) 
+        		e.sendMessage(message);
     }
     
     public void teleport(Location location){
-        for(Entity e:this) e.teleport(location);
+        for(Entity e:this) 
+        	e.teleport(location);
     }
     
     public void teleport(Location location,double radius){

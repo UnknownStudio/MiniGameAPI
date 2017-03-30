@@ -1,6 +1,5 @@
 package team.unstudio.minigameapi.game;
 
-public class GroupRule
-{
+public class GroupRule{
 	
 }

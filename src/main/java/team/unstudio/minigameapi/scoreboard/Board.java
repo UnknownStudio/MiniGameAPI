@@ -8,62 +8,74 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 
 public class Board {
-    private final org.bukkit.scoreboard.Scoreboard scoreboard;
-    private final Objective objective;
-    private final TreeMap<Integer,String> map = new TreeMap<>();
-    public Board(String title){
-    	scoreboard=Bukkit.getScoreboardManager().getNewScoreboard();
-    	this.objective = scoreboard.registerNewObjective(title, "dummy");
-    	this.objective.setDisplayName(title);
-    	this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-    }
-    public boolean set(int index,String text){
-    	if(index>15)return false;
-    	map.put(index, text);
-    	setup();
-    	return true;
+	private final org.bukkit.scoreboard.Scoreboard scoreboard;
+	private final Objective objective;
+	private final TreeMap<Integer, String> map = new TreeMap<>();
+
+	public Board(String title) {
+		scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+		this.objective = scoreboard.registerNewObjective(title, "dummy");
+		this.objective.setDisplayName(title);
+		this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 	}
-	public void remove(int index){
+
+	public boolean set(int index, String text) {
+		if (index > 15)
+			return false;
+		map.put(index, text);
+		setup();
+		return true;
+	}
+
+	public void remove(int index) {
 		this.scoreboard.resetScores(map.get(index));
 		map.remove(index);
 	}
-	public void remove(String line){
+
+	public void remove(String line) {
 		this.scoreboard.resetScores(line);
-		for(int i=0;i<map.size();i++)
-			if(map.get(i).equals(line))
+		for (int i = 0; i < map.size(); i++)
+			if (map.get(i).equals(line))
 				map.remove(i);
 	}
-	public void reset(String[] text){
-		for(int i=0;i<text.length;i++)
+
+	public void reset(String[] text) {
+		for (int i = 0; i < text.length; i++)
 			map.put(i, text[i]);
 		setup();
 	}
-	public org.bukkit.scoreboard.Scoreboard getScoreboard(){
+
+	public org.bukkit.scoreboard.Scoreboard getScoreboard() {
 		return this.scoreboard;
 	}
-	private void setup(){
+
+	private void setup() {
 		Score score;
-		for(int i=0;i<map.size();i++){
+		for (int i = 0; i < map.size(); i++) {
 			String s = map.get(i);
-			score=this.objective.getScore(s);
+			score = this.objective.getScore(s);
 			score.setScore(1);
 			score.setScore(i);
 		}
 	}
-	public String getTitle(){
+
+	public String getTitle() {
 		return objective.getDisplayName();
 	}
-	public String[] getText(){
+
+	public String[] getText() {
 		String[] s = new String[map.size()];
-		for(int i=0;i<map.size();i++){
-			s[i]=map.get(i);
+		for (int i = 0; i < map.size(); i++) {
+			s[i] = map.get(i);
 		}
 		return s;
 	}
-	public void setTitle(String title){
+
+	public void setTitle(String title) {
 		this.objective.setDisplayName(title);
 	}
-	public Score getScore(String line){
+
+	public Score getScore(String line) {
 		return this.objective.getScore(line);
 	}
 }
