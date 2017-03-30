@@ -10,7 +10,7 @@ import org.bukkit.entity.Entity;
 
 public enum GameRule{
 	
-	NOPVP;
+	NOPVP,NOMOVE;
 	
 	private static final Map<GameRule,Set<Entity>> cache = new EnumMap<>(GameRule.class);
 	
@@ -20,7 +20,6 @@ public enum GameRule{
 				cache.put(r, new HashSet<>());
 			cache.get(r).add(entity);
 		}
-			
 	}
 	
 	public static void addRule(Collection<Entity> entities,GameRule ...rules){

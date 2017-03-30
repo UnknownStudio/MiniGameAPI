@@ -67,7 +67,8 @@ public class SQL {
 		}
 		this.conn = DriverManager.getConnection("jdbc:sqlite:"+SQLFile);
 	}
-	public Boolean isTableExists(){
+	
+	public boolean isTableExists(){
 		try{
 			PreparedStatement stmt = this.conn.prepareStatement("SELECT * FROM "+this.schema+"."+this.table);
 		
@@ -76,7 +77,8 @@ public class SQL {
 			return false;
 		}
 	}
-	public Boolean isSchemaExists(){
+	
+	public boolean isSchemaExists(){
 		if (this.useMySQL){
 			try{
 				PreparedStatement stmt = this.conn.prepareStatement("SHOW SCHEMAS LIKE "+this.schema);
@@ -91,11 +93,13 @@ public class SQL {
 			return SQLFile.exists();
 		}
 	}
-	public Boolean createSchema() throws SQLException{
+	
+	public boolean createSchema() throws SQLException{
 		PreparedStatement stmt = this.conn.prepareStatement("CREATE DATABASE "+this.schema);
 		return stmt.execute();
 	}
-	public Boolean createTable(String table, TableProperty... properties) throws SQLException{
+	
+	public boolean createTable(String table, TableProperty... properties) throws SQLException{
 		StringBuilder code = new StringBuilder("CREATE TABLE "+table+" {");
 		for (TableProperty property : properties){
 			code.append(property.getCode()+",");

@@ -10,6 +10,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.EnumWrappers;
+import com.comphenix.protocol.wrappers.EnumWrappers.TitleAction;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 
 public final class GameUtils {
@@ -65,6 +66,12 @@ public final class GameUtils {
 	}
 	
 	public static void resetTitle(Player player){
-		//TODO:
+		PacketContainer packet = new PacketContainer(PacketType.Play.Server.TITLE);
+		packet.getTitleActions().write(0, TitleAction.CLEAR);
+		try{
+			pm.sendServerPacket(player, packet);
+		} catch (InvocationTargetException e){
+			e.printStackTrace();
+		}
 	}
 }

@@ -1,27 +1,25 @@
-package team.unstudio.minigameapi.currency;
+package team.unstudio.minigameapi.gamecoin;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
-import team.unstudio.minigameapi.MiniGameAPI;
-
-public class Currency {
-	private static SaveType saveType = SaveType.PLAYER_NAME;
+public class GameCoin {
+	private static SaveType saveType = SaveType.NAME;
 	private static Connection conn;
-	private final static String TABLE_NAME = "MGA_ECONOMY";
+	private final static String TABLE_NAME = "MGA_GAME_COIN";
 	private static double defaultMoney = 0D;
+	
 	/**
 	 * @param type SaveType
 	 */
 	public static void setSaveType(SaveType type){
 		saveType = type;
 	}
+	
 	/**
 	 * 
 	 * @param con connection
@@ -29,6 +27,7 @@ public class Currency {
 	public static void setConnection(Connection con){
 		conn = con;
 	}
+	
 	/**
 	 * 
 	 * @param player
@@ -41,6 +40,7 @@ public class Currency {
 		prepare.executeUpdate();
 		prepare.close();
 	}
+	
 	/**
 	 * 
 	 * @return player's money
@@ -59,6 +59,7 @@ public class Currency {
 		return money;
 		
 	}
+	
 	/**
 	 * 
 	 * @param value how much you want to give
@@ -71,6 +72,7 @@ public class Currency {
 		prepare.executeUpdate();
 		prepare.close();
 	}
+	
 	/**
 	 * 
 	 * @param value how much you want to set
@@ -83,6 +85,7 @@ public class Currency {
 		prepare.executeUpdate();
 		prepare.close();
 	}
+	
 	/**
 	 * 
 	 * @param value how much you want to take
@@ -96,8 +99,9 @@ public class Currency {
 		prepare.executeUpdate();
 		prepare.close();
 	}
+	
 	private static String getSaveName(OfflinePlayer player){
-		if (saveType == SaveType.PLAYER_NAME) return player.getName();
+		if (saveType == SaveType.NAME) return player.getName();
 		return player.getUniqueId().toString();
 	}
 }
