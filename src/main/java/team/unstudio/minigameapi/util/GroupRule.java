@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import org.bukkit.entity.Entity;
 
-public enum GroupRule { //TODO
+public enum GroupRule {
 	
 	NONE;
 	
@@ -36,5 +36,12 @@ public enum GroupRule { //TODO
 	public static Collection<Entity>[] getGroup(Entity entity,GroupRule rule){
 		if(!cache.containsKey(rule)) return new Collection[0];
 		return cache.get(rule).stream().filter(c->c.contains(entity)).toArray(i->new Collection[i]);
+	}
+	
+	public static boolean containSameGroup(Entity entity1,Entity entity2,GroupRule rule){
+		for(Collection<Entity> c:getGroup(entity1, rule))
+			if(c.contains(entity2)) 
+				return true;
+		return false;
 	}
 }

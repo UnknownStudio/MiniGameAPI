@@ -27,15 +27,27 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
     }
 	
 	private final AbstractGame game;
-	private final String name;
-	protected final EntityGroup<Player> players = new EntityGroup<>();
 	
+	private String name;
+	protected EntityGroup<Player> players = new EntityGroup<>();
 	private RoomState state = RoomState.DISABLED;
     private long tick=0;
 	
 	public Room(AbstractGame game,String name) {
 		this.game = game;
 		this.name = name;
+	}
+	
+	public Room(Map<String,Object> map){
+		this(GameManager.getGame((String)map.get("game")),(String)map.get("name"));
+	}
+	
+	public static Room deserialize(Map<String,Object> map){
+		return new Room(map);
+	}
+	
+	public static Room valueOf(Map<String,Object> map){
+		return new Room(map);
 	}
 
 	public EntityGroup<Player> getPlayers() {
@@ -48,6 +60,10 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
 	
 	public String getName(){
 		return name;
+	}
+	
+	public void setName(String name){
+		this.name = name;
 	}
 	
 	public RoomState getState(){
@@ -159,8 +175,10 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable
 	@Override
 	public Map<String, Object> serialize()
 	{
-		// TODO: Implement this method
-		return null;
+		Map<String,Object> map = new HashMap<>();
+		map.put("game", game.getName());
+		map.put("name", name);
+		return map;
 	}
     
     @Override
