@@ -15,8 +15,8 @@ public final class GameRuleListener implements Listener{
 	@EventHandler(priority=EventPriority.HIGHEST,ignoreCancelled=true)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
 		if(event.getDamager() instanceof Player&&event.getEntity() instanceof Player&&(
-				GameRule.hasRule(event.getDamager(), GameRule.NOPVP)||
-				GameRule.hasRule(event.getEntity(), GameRule.NOPVP))){
+				GameRule.hasRule(event.getDamager(), GameRule.NO_PVP)||
+				GameRule.hasRule(event.getEntity(), GameRule.NO_PVP))){
 			event.setCancelled(true);
 			return;
 		}
@@ -26,7 +26,7 @@ public final class GameRuleListener implements Listener{
 	public void onPlayerMove(PlayerMoveEvent event){
 		Location from = event.getFrom();
 		Location to = event.getTo();
-		if(GameRule.hasRule(event.getPlayer(), GameRule.NOMOVE)&&
+		if(GameRule.hasRule(event.getPlayer(), GameRule.NO_MOVE)&&
 				(from.getX()!=to.getX()||
 				from.getY()!=to.getY()||
 				from.getZ()!=to.getZ()))

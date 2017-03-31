@@ -9,7 +9,7 @@ import org.bukkit.entity.Entity;
 
 public enum GroupRule {
 	
-	NONE;
+	NO_MATE_DAMAGE;
 	
 	private static final Map<GroupRule,Set<Collection<Entity>>> cache = new EnumMap<>(GroupRule.class);
 	

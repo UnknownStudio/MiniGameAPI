@@ -10,7 +10,7 @@ import org.bukkit.entity.Entity;
 
 public enum GameRule{
 	
-	NOPVP,NOMOVE;
+	NO_PVP,NO_MOVE;
 	
 	private static final Map<GameRule,Set<Entity>> cache = new EnumMap<>(GameRule.class);
 	

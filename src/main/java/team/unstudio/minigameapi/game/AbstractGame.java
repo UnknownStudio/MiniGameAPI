@@ -55,7 +55,12 @@ public abstract class AbstractGame implements Listener,CommandExecutor{
     
     public abstract void onGameTick(Room room);
     
-    public abstract void onGameStart(Room room);
+    /**
+     * @return false will cancel game start
+     */
+    public abstract boolean onGamePreStart(Room room);
+    
+    public abstract void onGamePostStart(Room room);
     
     public abstract void onGameEnd(Room room);
     

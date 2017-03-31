@@ -37,9 +37,15 @@ public class DemoGame extends AbstractGame{
 		// TODO 自动生成的方法存根
 		
 	}
+	
+	@Override
+	public boolean onGamePreStart(Room room) {
+		// TODO 自动生成的方法存根
+		return false;
+	}
 
 	@Override
-	public void onGameStart(Room room) {
+	public void onGamePostStart(Room room) {
 		// TODO 自动生成的方法存根
 		
 	}
