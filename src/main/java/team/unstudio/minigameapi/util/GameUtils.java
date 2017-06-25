@@ -37,6 +37,7 @@ public final class GameUtils {
         player.setAllowFlight(false);
         player.getInventory().clear();
         player.setFireTicks(0);
+        player.setFlying(false);
     }
     
 	public static void sendActionBar(Player player,String text){
