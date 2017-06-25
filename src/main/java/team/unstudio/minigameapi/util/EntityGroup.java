@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Location;
 import java.util.Random;
+import net.md_5.bungee.api.chat.BaseComponent;
 
 public class EntityGroup<T extends Entity> extends HashSet<T>{
 	
@@ -32,8 +33,15 @@ public class EntityGroup<T extends Entity> extends HashSet<T>{
         		e.sendMessage(message);
     }
     
+    public void sendMessage(BaseComponent message){
+        for(Entity e:this) 
+            if(e instanceof Player) 
+                ((Player)e).spigot().sendMessage(message);
+    }
+    
     public void teleport(Location location){
-    	this.stream().forEach(e->e.teleport(location));
+    	for(Entity e:this)
+            e.teleport(location);
     }
     
     public void teleport(Location location,double radius){
