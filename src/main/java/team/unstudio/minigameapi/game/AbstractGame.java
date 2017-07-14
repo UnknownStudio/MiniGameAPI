@@ -33,9 +33,7 @@ public abstract class AbstractGame implements Listener,CommandExecutor{
         return rooms;
     }
     
-    public boolean addRoom(Room room){
-        return rooms.add(room);
-    }
+    public abstract Room createNewRoom(String name);
     
     public boolean removeRoom(Room room){
         room.dispose();

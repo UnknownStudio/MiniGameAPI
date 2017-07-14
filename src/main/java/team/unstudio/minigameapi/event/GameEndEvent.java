@@ -2,8 +2,8 @@ package team.unstudio.minigameapi.event;
 import org.bukkit.event.HandlerList;
 import team.unstudio.minigameapi.game.Room;
 
-public class GameEndEvent extends GameEvent
-{
+public class GameEndEvent extends GameEvent{
+	
     public GameEndEvent(Room room){
         super(room);
     }

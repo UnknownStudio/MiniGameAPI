@@ -1,20 +1,21 @@
 package team.unstudio.minigameapi.util;
 
 import java.util.Collection;
-import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.entity.Entity;
-import com.google.common.collect.Sets;
+
+import com.google.common.collect.Maps;
+
 import java.util.Collections;
 
 public enum GameRule{
 	
 	NO_PVP,NO_MOVE;
 	
-	private static final Map<Entity,Set<GameRule>> cache = new EnumMap<>(GameRule.class);
+	private static final Map<Entity,Set<GameRule>> cache = Maps.newHashMap();
 	
 	public static void addRule(Entity entity,GameRule ...rules){
 		if(!cache.containsKey(entity))

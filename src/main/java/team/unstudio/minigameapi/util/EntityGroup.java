@@ -5,9 +5,11 @@ import java.util.HashSet;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import net.md_5.bungee.api.chat.BaseComponent;
+
 import org.bukkit.Location;
 import java.util.Random;
-import net.md_5.bungee.api.chat.BaseComponent;
 
 public class EntityGroup<T extends Entity> extends HashSet<T>{
 	

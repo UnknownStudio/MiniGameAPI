@@ -14,15 +14,15 @@ import team.unstudio.minigameapi.util.EntityGroup;
 
 import java.util.HashMap;
 
-public class Room extends BukkitRunnable implements ConfigurationSerializable {
-	private static final Map<Player, Room> PlayerToRoom = new HashMap<>();
+public abstract class Room extends BukkitRunnable implements ConfigurationSerializable {
+	private static final Map<Player, Room> PLAYER_TO_ROOM = new HashMap<>();
 
 	public static boolean isInGame(Player player) {
-		return PlayerToRoom.containsKey(player);
+		return PLAYER_TO_ROOM.containsKey(player);
 	}
 
 	public static Room getRoom(Player player) {
-		return PlayerToRoom.get(player);
+		return PLAYER_TO_ROOM.get(player);
 	}
 
 	private final AbstractGame game;
@@ -39,14 +39,6 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable {
 
 	public Room(Map<String, Object> map) {
 		this(GameManager.getGame((String) map.get("game")), (String) map.get("name"));
-	}
-
-	public static Room deserialize(Map<String, Object> map) {
-		return new Room(map);
-	}
-
-	public static Room valueOf(Map<String, Object> map) {
-		return new Room(map);
 	}
 
 	public EntityGroup<Player> getPlayers() {
@@ -76,14 +68,14 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable {
 		if (state != RoomState.WAITING)
 			return false;
 
-		Bukkit.getPluginManager().callEvent(new GamePlayerJoinEvent(this, player));
+		GamePlayerJoinEvent event = new GamePlayerJoinEvent(this, player);
+		Bukkit.getPluginManager().callEvent(event);
+		if(event.isCancelled())
+			return false;
 
 		game.onPlayerJoin(this, player);
-
 		players.add(player);
-
-		PlayerToRoom.put(player, this);
-
+		PLAYER_TO_ROOM.put(player, this);
 		return true;
 	}
 
@@ -91,14 +83,14 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable {
 		if (!players.contains(player))
 			return true;
 
-		Bukkit.getPluginManager().callEvent(new GamePlayerLeaveEvent(this, player));
+		GamePlayerLeaveEvent event = new GamePlayerLeaveEvent(this, player);
+		Bukkit.getPluginManager().callEvent(event);
+		if(event.isCancelled())
+			return false;
 
 		game.onPlayerLeave(this, player);
-
 		players.remove(player);
-
-		PlayerToRoom.remove(player);
-
+		PLAYER_TO_ROOM.remove(player);
 		return true;
 	}
 
@@ -119,14 +111,15 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable {
 			else
 				return;
 		}
+		
+		GameStartEvent event = new GameStartEvent(this);
+		Bukkit.getPluginManager().callEvent(event);
+		if(event.isCancelled())
+			return;
+		
 		tick = 0;
-
-		Bukkit.getPluginManager().callEvent(new GameStartEvent(this));
-
 		game.onGamePostStart(this);
-
 		runTaskTimer(getGame().getPlugin(), 1L, 1L);
-
 		state = RoomState.PLAYING;
 	}
 
@@ -136,11 +129,8 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable {
 		}
 
 		cancel();
-
 		Bukkit.getPluginManager().callEvent(new GameStopEvent(this));
-
 		game.onGameStop(this);
-
 		state = RoomState.WAITING;
 	}
 
@@ -152,11 +142,8 @@ public class Room extends BukkitRunnable implements ConfigurationSerializable {
 		}
 
 		cancel();
-
 		Bukkit.getPluginManager().callEvent(new GameEndEvent(this));
-
 		game.onGameEnd(this);
-
 		state = RoomState.WAITING;
 	}
 
