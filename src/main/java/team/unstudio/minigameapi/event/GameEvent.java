@@ -1,34 +1,22 @@
 package team.unstudio.minigameapi.event;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
-import team.unstudio.minigameapi.game.AbstractGame;
-import team.unstudio.minigameapi.game.Room;
 
-public class GameEvent extends Event{
-    
-	private final Room room;
-	
-	public GameEvent(Room room){
-		this.room = room;
+import org.bukkit.event.Event;
+import team.unstudio.minigameapi.game.Game;
+import team.unstudio.minigameapi.game.Arena;
+
+public abstract class GameEvent extends Event {
+
+	private final Arena arena;
+
+	public GameEvent(Arena arena) {
+		this.arena = arena;
 	}
-	
-	public Room getRoom(){
-		return room;
+
+	public Arena getArena() {
+		return arena;
 	}
-	
-	public AbstractGame getGame(){
-		return room.getGame();
-	}
-    
-    private static final HandlerList handler = new HandlerList();
-	
-	@Override
-	public HandlerList getHandlers()
-	{
-		return handler;
-	}
-	
-	public static HandlerList getHandlerList(){
-		return handler;
+
+	public Game getGame() {
+		return arena.getGame();
 	}
 }

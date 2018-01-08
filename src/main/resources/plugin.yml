@@ -1,5 +1,5 @@
 name: MiniGameAPI
-main: team.unstudio.minigameapi.MiniGameAPI
+main: team.unstudio.minigameapi.core.MiniGameAPI
 version: 1.0.0
 authors: [Mouse]
 description: MiniGameAPI

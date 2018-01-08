@@ -1,11 +1,12 @@
 package team.unstudio.minigameapi.event;
 
 import org.bukkit.event.HandlerList;
+
 import team.unstudio.minigameapi.game.Arena;
 
-public class GameEndEvent extends GameEvent {
+public class GameInitalizeEvent extends GameEvent {
 
-	public GameEndEvent(Arena arena) {
+	public GameInitalizeEvent(Arena arena) {
 		super(arena);
 	}
 

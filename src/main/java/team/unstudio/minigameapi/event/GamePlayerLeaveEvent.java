@@ -1,12 +1,13 @@
 package team.unstudio.minigameapi.event;
+
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
-import team.unstudio.minigameapi.game.Room;
+import team.unstudio.minigameapi.game.Arena;
 import org.bukkit.entity.Player;
 
-public class GamePlayerLeaveEvent extends GamePlayerEvent implements Cancellable{
+public class GamePlayerLeaveEvent extends GamePlayerEvent implements Cancellable {
 	private boolean cancelled = false;
-	
+
 	@Override
 	public boolean isCancelled() {
 		return cancelled;
@@ -16,20 +17,19 @@ public class GamePlayerLeaveEvent extends GamePlayerEvent implements Cancellable
 	public void setCancelled(boolean arg0) {
 		cancelled = arg0;
 	}
-	
-    public GamePlayerLeaveEvent(Room room,Player player){
-        super(room,player);
-    }
 
-    private static final HandlerList handler = new HandlerList();
+	public GamePlayerLeaveEvent(Arena arena, Player player) {
+		super(arena, player);
+	}
 
-    @Override
-    public HandlerList getHandlers()
-    {
-        return handler;
-    }
+	private static final HandlerList handler = new HandlerList();
 
-    public static HandlerList getHandlerList(){
-        return handler;
+	@Override
+	public HandlerList getHandlers() {
+		return handler;
+	}
+
+	public static HandlerList getHandlerList() {
+		return handler;
 	}
 }

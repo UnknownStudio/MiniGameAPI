@@ -12,96 +12,109 @@ public class GameCoin {
 	private static Connection conn;
 	private final static String TABLE_NAME = "MGA_GAME_COIN";
 	private static double defaultMoney = 0D;
-	
+
 	/**
-	 * @param type SaveType
+	 * @param type
+	 *            SaveType
 	 */
-	public static void setSaveType(SaveType type){
+	public static void setSaveType(SaveType type) {
 		saveType = type;
 	}
-	
+
 	/**
 	 * 
-	 * @param con connection
+	 * @param con
+	 *            connection
 	 */
-	public static void setConnection(Connection con){
+	public static void setConnection(Connection con) {
 		conn = con;
 	}
-	
+
 	/**
 	 * 
 	 * @param player
 	 */
-	public static void create(OfflinePlayer player) throws SQLException{
+	public static void create(OfflinePlayer player) throws SQLException {
 		String name = getSaveName(player);
-		PreparedStatement prepare = conn.prepareStatement("INSERT INTO "+TABLE_NAME+" (USER_ID, Money) VALUES (?, ?)");
+		PreparedStatement prepare = conn
+				.prepareStatement("INSERT INTO " + TABLE_NAME + " (USER_ID, Money) VALUES (?, ?)");
 		prepare.setString(1, name);
 		prepare.setDouble(2, defaultMoney);
 		prepare.executeUpdate();
 		prepare.close();
 	}
-	
+
 	/**
 	 * 
 	 * @return player's money
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
-	public static double get(OfflinePlayer player) throws SQLException{
+	public static double get(OfflinePlayer player) throws SQLException {
 		String name = getSaveName(player);
-		PreparedStatement prepare = conn.prepareStatement("SELECT Money FROM "+TABLE_NAME+" WHERE USER_ID LIKE ? LIMIT 0,1");
+		PreparedStatement prepare = conn
+				.prepareStatement("SELECT Money FROM " + TABLE_NAME + " WHERE USER_ID LIKE ? LIMIT 0,1");
 		prepare.setString(1, name);
 		ResultSet result = prepare.executeQuery();
 		double money = defaultMoney;
-		if (result.next()) money = result.getDouble(1); 
-		  else create(player);
+		if (result.next())
+			money = result.getDouble(1);
+		else
+			create(player);
 		result.close();
 		prepare.close();
 		return money;
-		
+
 	}
-	
+
 	/**
 	 * 
-	 * @param value how much you want to give
+	 * @param value
+	 *            how much you want to give
 	 */
-	public static void give(OfflinePlayer player,double value) throws SQLException{
+	public static void give(OfflinePlayer player, double value) throws SQLException {
 		String name = getSaveName(player);
-		PreparedStatement prepare = conn.prepareStatement("UPDATE "+TABLE_NAME+" SET Money=Money+? WHERE USER_ID LIKE ?");
+		PreparedStatement prepare = conn
+				.prepareStatement("UPDATE " + TABLE_NAME + " SET Money=Money+? WHERE USER_ID LIKE ?");
 		prepare.setDouble(1, value);
 		prepare.setString(2, name);
 		prepare.executeUpdate();
 		prepare.close();
 	}
-	
+
 	/**
 	 * 
-	 * @param value how much you want to set
+	 * @param value
+	 *            how much you want to set
 	 */
-	public static void set(OfflinePlayer player,double value) throws SQLException{
+	public static void set(OfflinePlayer player, double value) throws SQLException {
 		String name = getSaveName(player);
-		PreparedStatement prepare = conn.prepareStatement("UPDATE "+TABLE_NAME+" SET Money=? WHERE USER_ID LIKE ?");
+		PreparedStatement prepare = conn.prepareStatement("UPDATE " + TABLE_NAME + " SET Money=? WHERE USER_ID LIKE ?");
 		prepare.setDouble(1, value);
 		prepare.setString(2, name);
 		prepare.executeUpdate();
 		prepare.close();
 	}
-	
+
 	/**
 	 * 
-	 * @param value how much you want to take
+	 * @param value
+	 *            how much you want to take
 	 */
-	public static void take(OfflinePlayer player,double value) throws NoEnoughMoneyException,SQLException{
+	public static void take(OfflinePlayer player, double value) throws NoEnoughMoneyException, SQLException {
 		String name = getSaveName(player);
-		if (get(player)-value<0) throw new NoEnoughMoneyException("Player Has No Enough Money");
-		PreparedStatement prepare = conn.prepareStatement("UPDATE "+TABLE_NAME+" SET Money=Money-? WHERE USER_ID LIKE ?");
+		if (get(player) - value < 0)
+			throw new NoEnoughMoneyException("Player Has No Enough Money");
+		PreparedStatement prepare = conn
+				.prepareStatement("UPDATE " + TABLE_NAME + " SET Money=Money-? WHERE USER_ID LIKE ?");
 		prepare.setDouble(1, value);
 		prepare.setString(2, name);
 		prepare.executeUpdate();
 		prepare.close();
 	}
-	
-	private static String getSaveName(OfflinePlayer player){
-		if (saveType == SaveType.NAME) return player.getName();
+
+	private static String getSaveName(OfflinePlayer player) {
+		if (saveType == SaveType.NAME)
+			return player.getName();
 		return player.getUniqueId().toString();
 	}
 }
